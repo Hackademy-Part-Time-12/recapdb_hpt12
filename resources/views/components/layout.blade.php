@@ -8,6 +8,13 @@
 </head>
 <body>
     <x-navbar />
+    @if (session('message'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    
     <div class="min-vh-100">
         {{ $slot }}
     </div>
