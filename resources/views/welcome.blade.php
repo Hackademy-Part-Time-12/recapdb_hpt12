@@ -1,3 +1,5 @@
 <x-layout>
-    <h1>ciao</h1>
+    @auth
+        <h1>ciao {{Auth::user()->email}}</h1>
+    @endauth
 </x-layout>
