@@ -24,6 +24,24 @@
                         @enderror
                     </div>
                     <div class="my-3">
+                        <label for="" class="form-label">Editore</label>
+                        <select class="form-select" name="editor_id">
+                            <option selected disabled>Seleziona editore</option>
+                            @foreach ($editors as $editor)
+                                <option value="{{$editor->id}}">{{ $editor->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="my-3">
+                        <label for="" class="form-label">Categorie</label>
+                        <select class="form-select" name="categories[]" multiple>
+                            @foreach ($categories as $category)
+                                <option value="{{$category->id}}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        <small>Crtl/cmd + click per selezione più categorie</small>
+                    </div>
+                    <div class="my-3">
                         <label for="cover" class="form-label">Copertina</label>
                         <input type="file" class="form-control" name="cover" id="cover">
                         @error('cover')

@@ -42,4 +42,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    //? un utente è relazionato a più libri? Sì, quindi il metodo sarà al plurale
+    public function books(){
+        //? un utente ha tanti libri? Sì quindi il metodo è hasMany()
+        return $this->hasMany(Book::class);
+    }
 }

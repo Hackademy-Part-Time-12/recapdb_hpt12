@@ -6,6 +6,8 @@ use App\Models\Book;
 use App\Mail\ThankyouMail;
 use Illuminate\Http\Request;
 use App\Http\Requests\BookRequest;
+use App\Models\Category;
+use App\Models\Editor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -29,7 +31,9 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('book.create');
+        $editors = Editor::all();
+        $categories = Category::all();
+        return view('book.create', compact('editors', 'categories'));
     }
 
     /**
@@ -37,13 +41,16 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-        Book::create([
+        $book = Book::create([
             'title' => $request->title,
             'author' => $request->author,
             'plot' => $request->plot,
             'cover' => $request->file('cover')->store('public/covers'),
+            'user_id' => Auth::user()->id,
+            'editor_id' => $request->editor_id,
         ]);
-        Mail::to(Auth::user()->email)->send(new ThankyouMail());
+        $book->categories()->attach($request->categories);
+        // Mail::to(Auth::user()->email)->send(new ThankyouMail());
         return redirect(route('homepage'))->with('message', 'Libro inserito con successo');
     }
 
@@ -59,8 +66,10 @@ class BookController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Book $book)
-    {
-        return view('book.edit', compact('book'));
+    {   
+        $editors = Editor::all();
+        $categories = Category::all();
+        return view('book.edit', compact('book', 'editors', 'categories'));
     }
 
     /**
@@ -73,7 +82,12 @@ class BookController extends Controller
             'author' => $request->author,
             'plot' => $request->plot,
             'cover' => $request->file('cover') ? $request->file('cover')->store('public/covers') : $book->cover,
+            'editor_id' => $request->editor_id,
         ]);
+        // $book->categories()->detach();
+        // $book->categories()->attach($request->categories);
+        $book->categories()->sync($request->categories);
+
         return redirect(route('book.show', $book))->with('message', 'Libro aggiornato con successo');
     }
 
@@ -82,6 +96,7 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
+        $book->categories()->detach();
         $book->delete();
         return redirect(route('homepage'))->with('message', 'Libro eliminato con successo');
     }

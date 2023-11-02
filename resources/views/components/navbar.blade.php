@@ -20,12 +20,19 @@
         <ul class="navbar-nav justify-content-end">
             @auth
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">{{Auth::user()->name}}</a>
+                    <a class="nav-link" aria-current="page" href="{{ route('user.profile') }}">{{Auth::user()->name}}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="event.preventDefault(); document.querySelector('#form-logout').submit();">Logout</a>
                     <form action="{{route('logout')}}" method="POST" id="form-logout">
                         @csrf
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="" onclick="event.preventDefault(); document.querySelector('#form-delete').submit();">Cancella account</a>
+                    <form action="{{route('user.destroy')}}" method="POST" id="form-delete">
+                        @csrf
+                        @method('DELETE')
                     </form>
                 </li>
             @endauth

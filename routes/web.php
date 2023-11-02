@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [PublicController::class, 'homepage'])->name('homepage');
+Route::get('/profile', [PublicController::class, 'profile'])->name('user.profile');
+Route::delete('/user/destroy', [PublicController::class, 'destroy'])->name('user.destroy');
 
 Route::get('/book/create', [BookController::class, 'create'])->name('book.create');
 Route::post('/book/store', [BookController::class, 'store'])->name('book.store');

@@ -25,6 +25,23 @@
                         @enderror
                     </div>
                     <div class="my-3">
+                        <label for="" class="form-label">Editore</label>
+                        <select class="form-select" name="editor_id">
+                            @foreach ($editors as $editor)
+                                <option value="{{$editor->id}}" @if($book->editor_id == $editor->id) selected @endif>{{ $editor->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="my-3">
+                        <label for="" class="form-label">Categorie</label>
+                        <select class="form-select" name="categories[]" multiple>
+                            @foreach ($categories as $category)
+                                <option value="{{$category->id}}" @if($book->categories->contains($category->id)) selected @endif>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        <small>Crtl/cmd + click per selezione più categorie</small>
+                    </div>
+                    <div class="my-3">
                         <label for="cover" class="form-label">Copertina attuale</label>
                         <img src="{{Storage::url($book->cover)}}" alt="{{$book->title}}" class=" w-25 img-fluid d-block">
                     </div>
